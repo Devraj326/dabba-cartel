@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -10,10 +11,20 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB connection
-mongoose.connect('mongodb+srv://dev326patil:dev332266@dabbacaartel.lx9y9qz.mongodb.net/?retryWrites=true&w=majority&appName=dabbaCaartel', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://dev326patil:dev332266@dabbacaartel.lx9y9qz.mongodb.net/dabbaCaartel?retryWrites=true&w=majority';
+
+// Add error handling for connection
+mongoose.connect(MONGODB_URI)
+  .then(() => {
+    console.log('MongoDB connected successfully!');
+  })
+  .catch((error) => {
+    console.log('MongoDB connection failed:', error.message);
+    console.log('Please check your MongoDB Atlas setup:');
+    console.log('1. IP whitelist (add 0.0.0.0/0)');
+    console.log('2. Username/password');
+    console.log('3. Network connectivity');
+  });
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
