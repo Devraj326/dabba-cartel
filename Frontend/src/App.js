@@ -24,10 +24,18 @@ function App() {
   });
   const [loading, setLoading] = useState(true);
   const [currentView, setCurrentView] = useState('list'); // 'list', 'calendar', or 'dashboard'
-  const [selectedUser, setSelectedUser] = useState('');
   const [calendarData, setCalendarData] = useState([]);
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth() + 1);
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+
+  const fetchCalendarData = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/api/lunchbox/calendar/${currentYear}/${currentMonth}`);
+      setCalendarData(response.data);
+    } catch (error) {
+      toast.error('Error fetching calendar data');
+    }
+  };
 
   useEffect(() => {
     fetchRecords();
@@ -35,6 +43,7 @@ function App() {
     if (currentView === 'calendar') {
       fetchCalendarData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentView, currentMonth, currentYear]);
 
   const fetchRecords = async () => {
@@ -54,15 +63,6 @@ function App() {
       setStats(response.data);
     } catch (error) {
       toast.error('Error fetching statistics');
-    }
-  };
-
-  const fetchCalendarData = async () => {
-    try {
-      const response = await axios.get(`${API_BASE_URL}/api/lunchbox/calendar/${currentYear}/${currentMonth}`);
-      setCalendarData(response.data);
-    } catch (error) {
-      toast.error('Error fetching calendar data');
     }
   };
 
