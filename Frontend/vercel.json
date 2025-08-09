@@ -1,11 +1,9 @@
 {
   "version": 2,
-  "buildCommand": "cd Frontend && npm install && npm run build",
-  "outputDirectory": "Frontend/build",
-  "installCommand": "cd Frontend && npm install",
+  "name": "dabba-cartel-frontend",
   "builds": [
     {
-      "src": "Frontend/package.json",
+      "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
         "distDir": "build"
@@ -15,6 +13,9 @@
   "routes": [
     {
       "src": "/static/(.*)",
+      "headers": {
+        "cache-control": "s-maxage=31536000,immutable"
+      },
       "dest": "/static/$1"
     },
     {
@@ -22,8 +23,27 @@
       "dest": "/favicon.ico"
     },
     {
+      "src": "/manifest.json",
+      "dest": "/manifest.json"
+    },
+    {
+      "src": "/(.*\\.(js|css|ico|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot))",
+      "headers": {
+        "cache-control": "s-maxage=31536000,immutable"
+      },
+      "dest": "/$1"
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ]
+  ],
+  "env": {
+    "REACT_APP_API_URL": "@react_app_api_url"
+  },
+  "build": {
+    "env": {
+      "REACT_APP_API_URL": "@react_app_api_url"
+    }
+  }
 }

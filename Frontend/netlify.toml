@@ -1,0 +1,28 @@
+[build]
+  base = "."
+  command = "npm run build"
+  publish = "build"
+
+[build.environment]
+  REACT_APP_API_URL = "https://dabba-cartell.onrender.com"
+  CI = "false"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/static/*"
+  [headers.values]
+    Cache-Control = "max-age=31536000"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "max-age=31536000"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "max-age=31536000"
