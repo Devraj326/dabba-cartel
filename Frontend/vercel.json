@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "name": "dabba-cartel-frontend",
   "builds": [
     {
       "src": "package.json",
